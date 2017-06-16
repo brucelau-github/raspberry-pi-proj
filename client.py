@@ -1,11 +1,19 @@
 #!/usr/bin/python
 import socket               # Import socket module
+import sys
 
-
-s = socket.socket()         # Create a socket object
-host = socket.gethostname() # Get local machine name
+arg = sys.argv[1]
+#host = socket.gethostyname(args) # Get local machine name
+host = arg # Get local machine name
 port = 5000
 
+s = socket.socket()         # Create a socket object
 s.connect((host, port))
-print s.recv(1024)
+
+while True:
+    backstr = s.recv(1024)
+    if backstr == 'bye!':
+        break
+    else:
+        print backstr
 s.close                     # Close the socket when done

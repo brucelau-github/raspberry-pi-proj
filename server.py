@@ -11,5 +11,12 @@ print 'server running on port {0}'.format(port)
 while True:
    c, addr = s.accept()     # Establish connection with client.
    print 'Got connection from', addr
-   c.send('Thank you for connecting')
+   while True:
+        print 'enter your message:'
+        msg = raw_input()
+        if msg == 'bye!':
+            break
+        else:
+            c.send(msg)
+
    c.close()                # Close the connection
