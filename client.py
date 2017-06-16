@@ -2,9 +2,9 @@
 import socket               # Import socket module
 import sys
 
-arg = sys.argv[1]
+#arg = sys.argv[1]
 #host = socket.gethostyname(args) # Get local machine name
-host = arg # Get local machine name
+host = 'liu1ee.cs.uwindsor.ca' # Get local machine name
 port = 5000
 
 s = socket.socket()         # Create a socket object
