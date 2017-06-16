@@ -20,5 +20,6 @@ while True:
             break
         else:
             c.send(msg)
+   print 'waiting for another client'
 
    c.close()                # Close the connection

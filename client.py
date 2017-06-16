@@ -19,6 +19,7 @@ while not is_connected:
         print 'retry in 5s'
         time.sleep(2)
 
+print 'got a client'
 while True:
     backstr = s.recv(1024)
     if backstr == 'bye!':
