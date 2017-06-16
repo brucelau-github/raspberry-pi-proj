@@ -13,6 +13,7 @@ s.connect((host, port))
 while True:
     backstr = s.recv(1024)
     if backstr == 'bye!':
+        print 'server terminates connection. Bye!'
         break
     else:
         print backstr

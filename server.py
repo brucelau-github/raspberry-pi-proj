@@ -15,6 +15,8 @@ while True:
         print 'enter your message:'
         msg = raw_input()
         if msg == 'bye!':
+            print msg
+            c.send(msg)
             break
         else:
             c.send(msg)
