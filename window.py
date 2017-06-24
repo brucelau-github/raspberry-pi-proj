@@ -1,8 +1,9 @@
 from Tkinter import *
 
 class App:
-    def __init__(self, master):
-        frame = Frame(master)
+    def __init__(self):
+        self.root = Tk()
+        frame = Frame(self.root)
         frame.pack()
 
         self.msg = StringVar()
@@ -16,16 +17,12 @@ class App:
         self.hi_there = Button(frame, text="Hello", command=self.say_hi)
         self.hi_there.pack(side=LEFT)
 
-
     def say_hi(self):
         self.msg.set("hello world")
-        print "hi there, everyone!"
 
-root = Tk() #create basic window
+    def updatemsg(self, msg=''):
+        self.msg.set(msg)
 
-app = App(root)
+    def run(self):
+        self.root.mainloop()
 
-app.msg.set("startup")
-
-root.mainloop() #keep the windows showing
-root.destroy()
