@@ -1,30 +1,30 @@
 #!/usr/bin/python
 import socket               # Import socket module
 import sys
-import time
 
-#arg = sys.argv[1]
-#host = socket.gethostyname(args) # Get local machine name
-host = 'liu1ee.cs.uwindsor.ca' # Get local machine name
-port = 5000
-
-s = socket.socket()         # Create a socket object
-is_connected = False
-while not is_connected:
-    try:
-        s.connect((host, port))
-        is_connected = True
-    except socket.error, e:
-        print 'error to connect server: ', host
-        print 'retry in 5s'
-        time.sleep(2)
-
-print 'got a client'
-while True:
-    backstr = s.recv(1024)
-    if backstr == 'bye!':
-        print 'server terminates connection. Bye!'
-        break
-    else:
-        print backstr
-s.close                     # Close the socket when done
+class Connector:
+    def __init__(self, host='liu1ee.cs.uwindsor.ca', port=5000):
+        self.host = host
+        self.port = port
+        self.skt = socket.socket()         # Create a socket object
+        self.is_connected = False
+    def connect(self):
+        try:
+            self.skt.connect((self.host, self.port))
+            self.is_connected = True
+        except socket.error, e:
+            return 'error to connect server: {0}'.format(self.host)
+    def getmsg(self):
+        while True:
+            backstr = self.skt.recv(1024)
+            if backstr == 'bye!':
+                print 'server terminates connection. Bye!'
+                break
+            else:
+                print backstr
+    def disconnect(self):
+        self.skt.close
+cli = Connector()
+cli.connect()
+cli.getmsg()
+cli.disconnect()
