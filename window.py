@@ -3,6 +3,7 @@ from Tkinter import *
 class App:
     def __init__(self):
         self.root = Tk()
+        self.full_screen()
         frame = Frame(self.root)
         frame.pack()
 
@@ -19,6 +20,7 @@ class App:
 
     def say_hi(self):
         self.msg.set("hello world")
+        self.full_screen()
 
     def updatemsg(self, msg=''):
         self.msg.set(msg)
@@ -28,4 +30,7 @@ class App:
 
     def close(self):
         self.root.destroy()
+    def full_screen(self):
+        self.root.overrideredirect(True)
+        self.root.geometry("{0}x{1}+0+0".format(self.root.winfo_screenwidth(), self.root.winfo_screenheight()))
 
