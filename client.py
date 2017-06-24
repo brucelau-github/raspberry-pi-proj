@@ -14,17 +14,13 @@ class Connector:
             self.is_connected = True
         except socket.error, e:
             return 'error to connect server: {0}'.format(self.host)
-    def getmsg(self):
+    def getmsg(self, appwind):
         while True:
             backstr = self.skt.recv(1024)
             if backstr == 'bye!':
-                print 'server terminates connection. Bye!'
+                appwin.updatemsg('server terminates connection. Bye!')
                 break
             else:
-                print backstr
+                appwin.updatemsg(backstr)
     def disconnect(self):
         self.skt.close
-cli = Connector()
-cli.connect()
-cli.getmsg()
-cli.disconnect()
