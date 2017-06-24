@@ -26,3 +26,6 @@ class App:
     def run(self):
         self.root.mainloop()
 
+    def close(self):
+        self.root.destroy()
+
