@@ -1,9 +1,13 @@
+import threading
 from Tkinter import *
+from client import Connector
 
 class App:
     def __init__(self):
         self.root = Tk()
         self.full_screen()
+        self.connector = Connector()
+        self.connector.connect()
 
         self.msg = StringVar()
         self.msg.set("test")
@@ -24,9 +28,14 @@ class App:
         self.msg.set(msg)
 
     def run(self):
+        self.connector_thread = threading.Thread(target=self.connector.getmsg, args=(self,))
+        self.connector_thread.start()
         self.root.mainloop()
 
     def close(self):
+        self.connector.shutdown = True
+        self.connector_thread.join()
+        self.connector.disconnect()
         self.root.destroy()
     def full_screen(self):
         self.root.overrideredirect(False)
