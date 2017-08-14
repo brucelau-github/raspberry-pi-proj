@@ -1,13 +1,13 @@
 import threading
 from Tkinter import *
-from client import Connector
+from connector import Connector
 
 class App:
     def __init__(self):
         self.root = Tk()
         self.full_screen()
         self.connector = Connector()
-        self.connector.connect()
+        self.connector.registerApp(self)
 
         self.msg = StringVar()
         self.msg.set("test")
@@ -24,11 +24,11 @@ class App:
     def say_hi(self):
         self.msg.set("hello world")
 
-    def updatemsg(self, msg=''):
+    def update_msg(self, msg=''):
         self.msg.set(msg)
 
     def run(self):
-        self.connector_thread = threading.Thread(target=self.connector.getmsg, args=(self,))
+        self.connector_thread = threading.Thread(target=self.connector.serve_forever)
         self.connector_thread.start()
         self.root.mainloop()
 
