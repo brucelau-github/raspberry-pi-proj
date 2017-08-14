@@ -26,10 +26,14 @@ class Connector:
         while not self.shutdown:
             try:
                 backstr = self.skt.recv(1024)
-                print(backstr)
-                self.disconnect()
+                if backstr:
+                    print(backstr)
             except socket.timeout:
                 print("recv timeout")
+            except socket.error:
+                self.disconnect()
+                print("socket disconnected")
+                break
 
     def disconnect(self):
         self.skt.close()
