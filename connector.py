@@ -12,7 +12,7 @@ class Connector:
         self.skt = socket.socket()         # Create a socket object
         self.skt.settimeout(SOCKET_TIMEOUT)
         self.is_connected = False
-        self.shutdown = False
+        self.request_shutdown = False
         self.connect()
 
     def connect(self):
@@ -23,7 +23,7 @@ class Connector:
             print 'error to connect server: {0}'.format(self.host)
             raise socketerror 
     def getmsg(self):
-        while not self.shutdown:
+        while not self.request_shutdown:
             try:
                 backstr = self.skt.recv(1024)
                 if backstr:
