@@ -38,9 +38,6 @@ class Connector:
         self.is_connected = False
         self.skt.close()
 
-    def registerApp(self, app):
-        self.app = app
-
     def serve_forever(self, poll_interval=0.5):
         """Monitor message coming from the socket
 
@@ -57,7 +54,23 @@ class Connector:
             self.disconnect()
 
     def handle_message(self):
-        self.app.update_msg(getmsg())
+        """overwrite by sub class
+        consume the message
+        """
+        pass
+
+
+class AppConnector(Connector):
+    """App specified connector
+    pass message to app
+    """
+    def __init__(self, host, port, app=None):
+        Connector.__init__(self, host, port)
+        self.app = app
+
+    def handle_message(self):
+        self.app.update_msg(self.getmsg())
+
 
 if __name__ == '__main__':
     c = Connector()
