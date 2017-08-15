@@ -30,9 +30,8 @@ class Connector:
             raise socketerror 
 
     def getmsg(self):
-        backstr = self.skt.recv(1024)
-        if backstr:
-            return backstr
+        data = self.skt.recv(1024)
+        return data
 
     def disconnect(self):
         self.is_connected = False
