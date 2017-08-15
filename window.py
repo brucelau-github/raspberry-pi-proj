@@ -32,7 +32,7 @@ class App:
         self.root.mainloop()
 
     def close(self):
-        self.connector.shutdown = True
+        self.connector.request_shutdown = True
         self.connector_thread.join()
         self.connector.disconnect()
         self.root.destroy()

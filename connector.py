@@ -64,7 +64,7 @@ class AppConnector(Connector):
     """App specified connector
     pass message to app
     """
-    def __init__(self, host, port, app=None):
+    def __init__(self, host='localhost', port=5000, app=None):
         Connector.__init__(self, host, port)
         self.app = app
 
