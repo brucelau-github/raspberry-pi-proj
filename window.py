@@ -1,13 +1,12 @@
 import threading
 from Tkinter import *
-from connector import Connector
+from connector import AppConnector
 
 class App:
     def __init__(self):
         self.root = Tk()
         self.full_screen()
-        self.connector = Connector()
-        self.connector.registerApp(self)
+        self.connector = AppConnector(app=self)
 
         self.msg = StringVar()
         self.msg.set("test")
