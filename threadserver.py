@@ -29,7 +29,7 @@ class MessageCenter(SocketServer.ThreadingTCPServer):
             return
         for client in self.clients:
             try:
-                print "send messge to {}".format(client)
+                print "send messge to {}".format(client.getpeername())
                 client.sendall(message)
             except socket.error as e:
                 client.close()
