@@ -5,6 +5,7 @@ Headers
 """
 FROM = "From"
 TO = "To"
+DATE = "Date"
 CONTENTTYPE = "Content-type"
 CONTENTLENGTH = "Content-length"
 
@@ -13,7 +14,10 @@ class Message:
     create some common method to overwrite by subclass
     """
     def __init__(self):
-        self._header={'Date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+        """constructor method
+        generate default current time as Date
+        """
+        self.set_header(DATE, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
     def __str__(self):
         pass
@@ -27,6 +31,8 @@ class Message:
         return ret_str
 
     def set_header(self, key, value):
+        if not hasattr(self, '_header'):
+            self._header = {}
         self._header[key] = value
 
 
