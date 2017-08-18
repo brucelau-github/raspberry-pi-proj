@@ -27,7 +27,7 @@ class Message:
             return None
         ret_str = ""
         for k, v in self._header.items():
-            ret_str = ret_str + '{0}:{1}\n'.format(str(k),str(v))
+            ret_str = ret_str + '{0}: {1}\n'.format(str(k),str(v))
         return ret_str
 
     def set_header(self, key, value):
