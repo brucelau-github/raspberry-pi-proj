@@ -68,5 +68,7 @@ class TextMessage(Message):
     """a simple text message class
     wrap only a text message
     """
-    def __init__(self, message_body=None):
-        self.message_body = message_body
+    def __init__(self, text_message=None):
+        Message.__init__(self)
+        self.set_body(MessageBody(text_message))
+        self.set_header(CONTENTTYPE, 'text/plain')
