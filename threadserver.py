@@ -2,6 +2,7 @@
 import threading
 import SocketServer
 import socket
+from message import Message, TextMessage
 
 class MessageCenter(SocketServer.ThreadingTCPServer):
     def __init__(self, server_address, RequestHandlerClass):
@@ -43,6 +44,31 @@ class MessageHandler(SocketServer.BaseRequestHandler):
         response = "hello guest!"
         self.request.sendall(response)
 
+
+class DetailServer(MessageCenter):
+    """inheritate from MessageCenter
+    over write send_message with MessageObject
+    """
+    def send_message(self, message=None):
+        """Overwite Send message to all clients
+        default send empty message
+        """
+        if not self.clients:
+            print "No Clients"
+            return
+        if not isinstance(message, Message):
+            print "not a Message Class"
+            return
+        for client in self.clients:
+            try:
+                print "send messge to {}".format(client.getpeername())
+                client.sendall(message.as_string())
+            except socket.error as e:
+                client.close()
+                print("client colsed due to {}".format(e))
+                self.clients.remove(client) #connect closed
+
+
 def get_input(server):
     while True:
         message = raw_input("Enter your message here:")
@@ -50,16 +76,22 @@ def get_input(server):
             server.send_message("")
         server.send_message(message)
 
+def get_message_input(server):
+    while True:
+        message = raw_input("Enter your message here:")
+        server.send_message(TextMessage(message))
+
 def thread_input(server):
     """Start a new thread to process the request."""
-    t = threading.Thread(target = get_input, args=(server,))
+    t = threading.Thread(target = get_message_input, args=(server,))
     t.daemon = True
     t.start()
 
 if __name__ == "__main__":
 
     HOST, PORT = "0.0.0.0", 5000
-    server = MessageCenter((HOST, PORT), MessageHandler)
+    #server = MessageCenter((HOST, PORT), MessageHandler)
+    server = DetailServer((HOST, PORT), MessageHandler)
     thread_input(server)
     print 'server running on port {0}'.format(server.server_address)
     server.serve_forever()
