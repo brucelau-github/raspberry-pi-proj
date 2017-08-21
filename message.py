@@ -17,10 +17,14 @@ class Message:
         """constructor method
         generate default current time as Date
         """
-        self.set_header(DATE, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        self.set_default_header()
 
     def __str__(self):
         pass
+
+    def set_default_header(self):
+        self.set_header(DATE, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        self.set_header(FROM, "Message Center Server")
 
     def get_header(self):
         if not self._header:
