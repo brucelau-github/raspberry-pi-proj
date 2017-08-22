@@ -3,6 +3,7 @@ import socket               # Import socket module
 import sys
 import threading
 import select
+import message
 
 
 class Connector:
@@ -66,10 +67,45 @@ class AppConnector(Connector):
     def __init__(self, host='localhost', port=5000, app=None):
         Connector.__init__(self, host, port)
         self.app = app
+        self.moredata = False
+        self.msg = None
 
     def handle_message(self):
-        self.app.update_msg(self.getmsg())
+        self.parse_message()
 
+    def parse_message(self):
+        raw_data = self.getmsg()
+        if self.moredata:
+            self.assemble_data(raw_data)
+        else:
+            self.msg = None #clear data before assign new data
+            self.msg = message.Message()
+            self.msg.parse_fromstr(raw_data)
+            if len(self.msg._body) == self.msg.get_body_length():
+                self.moredata = False
+                self.update_app()
+            else:
+                self.moredata = True
+    def assemble_data(self, data):
+        self.msg.append_body(data)
+        if len(self.msg._body) < self.msg.get_body_length():
+            self.moredata = True
+        elif len(self.msg._body) == self.msg.get_body_length():
+            self.moredata = False
+            self.update_app()
+        else: #got some addtional noisy data so get rid of all the data
+            self.msg = None
+            self.moredata = False
+
+    def update_app(self):
+        if self.msg.is_image():
+            imgmsg = message.ImageMessage()
+            imgmsg.parse_fromobj(self.msg)
+            self.app.update_image(imgmsg)
+        else:
+            txtmsg = message.TextMessage()
+            txtmsg.parse_fromobj(self.msg)
+            self.app.update_msg(txtmsg)
 
 if __name__ == '__main__':
     c = Connector()
