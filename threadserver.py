@@ -2,7 +2,7 @@
 import threading
 import SocketServer
 import socket
-from message import Message, TextMessage
+from message import Message, TextMessage, ImageMessage
 
 class MessageCenter(SocketServer.ThreadingTCPServer):
     def __init__(self, server_address, RequestHandlerClass):
@@ -41,8 +41,9 @@ class MessageCenter(SocketServer.ThreadingTCPServer):
 class MessageHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         print 'Got connection from {}'.format(self.client_address)
-        response = "hello guest!"
-        self.request.sendall(response)
+        txtmsg = TextMessage()
+        txtmsg.set_text_body("hello guest!")
+        self.request.sendall(txtmsg.as_string())
 
 
 class DetailServer(MessageCenter):
@@ -79,11 +80,20 @@ def get_input(server):
 def get_message_input(server):
     while True:
         message = raw_input("Enter your message here:")
-        server.send_message(TextMessage(message))
+        txtmsg = TextMessage()
+        txtmsg.set_text_body(message)
+        server.send_message(txtmsg.as_string())
+
+def get_image_input(server):
+    while True:
+        message = raw_input("choose the image you want to send:")
+        imgmsg = ImageMessage()
+        imgmsg.load_from_filepath(filepath="test-image.jpg")
+        server.send_message(imgmsg)
 
 def thread_input(server):
     """Start a new thread to process the request."""
-    t = threading.Thread(target = get_message_input, args=(server,))
+    t = threading.Thread(target = get_image_input, args=(server,))
     t.daemon = True
     t.start()
 
