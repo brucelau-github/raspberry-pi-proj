@@ -13,7 +13,7 @@ class Connector:
         self.port = port
         self.skt = socket.socket()
         self.is_connected = False
-        self.request_shutdown = False
+        self.request_shutdown = threading.Event()
         self.connect()
 
     def fileno(self):
@@ -45,8 +45,9 @@ class Connector:
         self.timeout. If you need to do periodic tasks, do them in
         another thread.
         """
+        self.request_shutdown.clear()
         try:
-            while not self.request_shutdown:
+            while not self.request_shutdown.isSet():
                 r, w, e = select.select([self], [], [], poll_interval)
                 if self in r:
                     self.handle_message()
@@ -59,6 +60,9 @@ class Connector:
         """
         pass
 
+    def shutdown(self):
+        self.request_shutdown.set()
+        self.disconnect()
 
 class AppConnector(Connector):
     """App specified connector
@@ -69,6 +73,7 @@ class AppConnector(Connector):
         self.app = app
         self.moredata = False
         self.msg = None
+        self.mainthread = threading.currentThread()
 
     def handle_message(self):
         self.parse_message()
@@ -106,6 +111,15 @@ class AppConnector(Connector):
             txtmsg = message.TextMessage()
             txtmsg.parse_fromobj(self.msg)
             self.app.update_msg(txtmsg)
+
+    def thread_serve_forever(self):
+        self.servingthread = threading.Thread(target=self.serve_forever)
+        self.servingthread.start()
+
+    def shutdown(self):
+        Connector.shutdown(self)
+        self.servingthread.join()
+
 
 if __name__ == '__main__':
     c = Connector()
