@@ -1,5 +1,4 @@
-from window import App
+from appview import AppView
 
-win_app = App()
-print "it is running now!"
-win_app.run()
+win_app = AppView()
+win_app.mainloop()
