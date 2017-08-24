@@ -9,6 +9,7 @@ class AppView(Tk):
     def __init__(self):
         Tk.__init__(self)
         self.init_connector()
+        self.title('Raspberry Pi Client')
         self.label = Label(self)
         self.full_screen()
         self.label.place(relx=0.5, rely=0.5, anchor=CENTER)
