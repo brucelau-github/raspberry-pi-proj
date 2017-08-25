@@ -26,9 +26,11 @@ class Connector:
         try:
             self.skt.connect((self.host, self.port))
             self.is_connected = True
+            return self.skt.fileno()
+
         except socket.error as socketerror:
             print 'error to connect server: {0}'.format(self.host)
-            raise socketerror 
+            raise socketerror
 
     def getmsg(self):
         data = self.skt.recv(1024)
