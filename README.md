@@ -1,6 +1,6 @@
 # raspberry-pi-proj
 ##dependency
-*[python 2.7](https://www.python.org/
+*[python 2.7](https://www.python.org)
 *[Tkinter](https://wiki.python.org/moin/TkInter) - python GUI library based on Tcl
 ##technology
 *socket
