@@ -1,19 +1,19 @@
 # raspberry-pi-proj
-##dependency
-*[python 2.7](https://www.python.org)
-*[Tkinter](https://wiki.python.org/moin/TkInter) - python GUI library based on Tcl
-##technology
-*socket
-*objec oriented design
-*threading
-*GUI python
-*message protocol
-##explain
+## dependency
+* [python 2.7](https://www.python.org)
+* [Tkinter](https://wiki.python.org/moin/TkInter) - python GUI library based on Tcl
+## technology
+* socket
+* objec oriented design
+* threading
+* GUI python
+* message protocol
+## explain
 
 this software contains a server side and client side where all clients should connect to server
 when starting up. Server could send text message or image to clients.
 
-###server side - threadserver.py
+### server side - threadserver.py
 
 this software contains a server side and client side where all clients should connect to server
 when starting up. The server side code basicly contain three classes MessageCenter class which
@@ -27,7 +27,7 @@ this server side include three threads - request accetping thread, interactive t
 To terminate server side properly without leaving zombie thread in system, it is recommend to exit
 by choose option 3 in the main menu which will shutdown all background thread releasing all resources.
 
-###client side - connector.py, appview.py, mainapp.py
+### client side - connector.py, appview.py, mainapp.py
 
 the connector.py contains a classes called Connector that are related to socket communication. It
 maintains socket connecting to the server, monitoring socket, handles incoming message, and shuts
@@ -42,13 +42,13 @@ the passed Message Object showing message on interface.
 There are also two thread fulfilling this client side application - socket monitoring thread, and windows
 thread.
 
-##how to run
-###server side
+## how to run
+### server side
 ```sh
 $ cd the-project-directory
 $ python threadserver.py
 ```
-###client side
+### client side
 ```sh
 $ cd the-project-directory
 $ python mainapp.py
